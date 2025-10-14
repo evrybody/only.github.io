@@ -12,7 +12,7 @@ import Slider from "../Slider/Slider";
 const SkeletonWrapper = styled.section`
   position: relative;
   width: 100%;
-  height: 100dvh;
+  height: 100vh; //TODO
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,7 +21,7 @@ const SkeletonWrapper = styled.section`
 const Cross = styled.div`
   position: absolute;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   z-index: 1;
 
   &::before,

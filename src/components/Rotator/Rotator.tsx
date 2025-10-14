@@ -7,7 +7,7 @@ interface CircleProps {
 }
 
 const Circle = styled.div`
-  position: absolute;
+  position: relative;
   width: 536px;
   height: 530px;
   border-radius: 50%;

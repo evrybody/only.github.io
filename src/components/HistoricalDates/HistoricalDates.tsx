@@ -9,6 +9,8 @@ const DatesWrapper = styled.div`
   font-size: 200px;
   font-weight: bold;
   gap: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 const LeftDate = styled.span`
