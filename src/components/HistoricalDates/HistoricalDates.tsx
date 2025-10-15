@@ -7,10 +7,21 @@ import { useItemsStore } from "../../store/useItemsStore";
 const DatesWrapper = styled.div`
   position: absolute;
   display: flex;
-  gap: 5rem;
-  font-size: 200px;
+  gap: clamp(2rem, 5vw, 6rem);
   font-weight: bold;
   pointer-events: none;
+
+  font-size: clamp(3.5rem, 10vw, 12.5rem);
+
+  @media (max-width: 768px) {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 76px;
+  }
 `;
 
 const LeftDate = styled.span`
@@ -28,7 +39,9 @@ const HistoricalDates: React.FC = () => {
   const leftRef = useRef<HTMLSpanElement>(null);
   const rightRef = useRef<HTMLSpanElement>(null);
 
-  const activeInterval = items.find((item) => item.index === activeIndex)?.interval;
+  const activeInterval = items.find(
+    (item) => item.index === activeIndex
+  )?.interval;
   const [start, end] = activeInterval || [];
 
   const prevValues = useRef<{ start: number; end: number }>({

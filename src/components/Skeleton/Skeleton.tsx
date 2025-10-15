@@ -10,7 +10,27 @@ import DateChanger from "../HistoricalDates/DateChanger";
 import Slider from "../Slider/Slider";
 
 const SkeletonWrapper = styled.section`
-  display: contents;
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    align-items: flex-end;
+  }
+`;
+
+const FooterWrapper = styled.footer`
+  width: 100%;
+  display: flex;
+  margin-top: auto;
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    margin: 0;
+  }
 `;
 
 const Cross = styled.div`
@@ -18,6 +38,8 @@ const Cross = styled.div`
   width: 100%;
   height: 100%;
   z-index: 1;
+  pointer-events: none;
+  display: block;
 
   &::before,
   &::after {
@@ -41,40 +63,54 @@ const Cross = styled.div`
     top: 0;
     transform: translateX(-50%);
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const MiddleLine = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    display: block;
+    width: calc(100% - 40px);
+    height: 1px;
+    background-color: #c7cdd9;
+    left: 20px;
+    margin-top: 80%;
+  }
 `;
 
 const HistoricalHeader = styled.span`
-  grid-column: 1;
-  margin-top: 170px;
-  margin-left: 80px;
+  position: absolute;
+  margin-top: clamp(59px, 10vw, 170px);
+  margin-left: clamp(20px, 4vw, 80px);
   font-size: 56px;
   font-weight: bold;
   max-width: 353px;
-  color: #42567a;
+  color: var(--dark-blue);
+
+  font-size: clamp(1.25rem, 2vw + 1rem, 3.5rem);
 `;
 
 const ColoredVector = styled.div`
-  grid-column: 1;
+  position: absolute;
   margin-top: 177px;
-  margin-left: 2px;
   width: 5px;
-  height: 120px;
-  background: linear-gradient(#3877ee, #ef5da8);
+  height: clamp(50px, 8vw, 120px);
+  background: linear-gradient(var(--blue), #ef5da8);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
-const SidebarStack = styled.div`
-  grid-column: 1;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ContentArea = styled.div`
-  grid-column: 2;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 1080px;
+const RotatorWrapper = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Skeleton: React.FC = () => {
@@ -82,20 +118,28 @@ const Skeleton: React.FC = () => {
   const { getSlidesByIndex } = useSlidesStore();
 
   const currentSlides = getSlidesByIndex(activeIndex);
+
   return (
-    <SkeletonWrapper>
-      <SidebarStack>
-        <HistoricalHeader>Исторические даты</HistoricalHeader>
-        <ColoredVector />
+    <>
+      <HistoricalHeader>
+        Исторические
+        <br />
+        даты
+      </HistoricalHeader>
+      <ColoredVector />
+      <MiddleLine />
+      <SkeletonWrapper>
         <DateChanger />
-      </SidebarStack>
-      <ContentArea>
-        <Rotator items={items} />
+        <RotatorWrapper>
+          <Rotator items={items} />
+        </RotatorWrapper>
         <Cross />
         <HistoricalDates />
-        <Slider slides={currentSlides} />
-      </ContentArea>
-    </SkeletonWrapper>
+        <FooterWrapper>
+          <Slider slides={currentSlides} />
+        </FooterWrapper>
+      </SkeletonWrapper>
+    </>
   );
 };
 

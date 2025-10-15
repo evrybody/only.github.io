@@ -14,10 +14,10 @@ const NavigationContainer = styled.div`
 const NavButton = styled.button`
   width: 50px;
   height: 50px;
-  border: 1px solid #3877ee;
+  border: 1px solid var(--blue);
   border-radius: 50%;
   background: white;
-  color: #3877ee;
+  color: var(--blue);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -30,7 +30,7 @@ const NavButton = styled.button`
   }
 
   &:hover:not(:disabled) {
-    background: #3877ee;
+    background: var(--blue);
     color: white;
   }
 `;

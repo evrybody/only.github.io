@@ -2,6 +2,10 @@ import React, { useRef, useState } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
+
+import { Pagination } from "swiper/modules";
+import "swiper/css/pagination";
+
 import "swiper/css";
 
 import styled from "styled-components";
@@ -17,18 +21,50 @@ interface ISliderProps {
 }
 
 const SwiperContainer = styled.div`
-  position: absolute;
-  top: 841px;
-  width: 1440px;
+  position: relative;
+  width: 100%;
+  top: 40%;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 768px) {
+    .swiper-slide {
+      transition: opacity 0.3s ease;
+
+      &:not(.swiper-slide-active) {
+        opacity: 0.5;
+      }
+
+      &.swiper-slide-active {
+        opacity: 1;
+      }
+    }
+
+    .swiper-pagination {
+      position: relative;
+      padding-top: 7rem;
+    }
+
+    .swiper-pagination-bullet {
+      width: 8px;
+      height: 8px;
+      background: var(--dark-blue);
+      opacity: 0.4;
+      margin: 0 5px;
+    }
+
+    .swiper-pagination-bullet-active {
+      opacity: 1;
+      background: var(--dark-blue);
+    }
+  }
 `;
 
 const SlideContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 1200px;
+  width: min(1200px, 100%);
 `;
 
 const NextButton = styled.button`
@@ -38,7 +74,7 @@ const NextButton = styled.button`
   height: 40px;
   border: none;
   border-radius: 50%;
-  background: #ffffff;
+  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,7 +83,15 @@ const NextButton = styled.button`
   margin-right: 40px;
   transition: all 0.3s ease-in-out;
 
+  &:hover {
+    opacity: 0.7;
+  }
+
   &:disabled {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
     display: none;
   }
 `;
@@ -56,22 +100,36 @@ const PrevButton = styled(NextButton)`
   margin-left: 40px;
   right: auto;
   left: 0;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Slide = styled.div`
   display: flex;
   flex-direction: column;
+  min-height: 135px;
+
+  @media (max-width: 768px) {
+    margin-left: 20px;
+  }
 `;
 
 const SlideDate = styled.span`
   font-size: 25px;
-  color: #3877ee;
+  color: var(--blue);
   margin-bottom: 22px;
 `;
 
 const SlideContent = styled.p`
-  color: #42567a;
+  color: var(--dark-blue);
   font-size: 20px;
+
+  @media (max-width: 768px) {
+    height: 80px;
+    font-size: 14px;
+  }
 `;
 
 const Slider: React.FC<ISliderProps> = ({ slides }) => {
@@ -93,11 +151,12 @@ const Slider: React.FC<ISliderProps> = ({ slides }) => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <path d="M7 11L2 6L7 1" stroke="#3877EE" strokeWidth="2" />
+          <path d="M7 11L2 6L7 1" stroke="var(--blue)" strokeWidth="2" />
         </svg>
       </PrevButton>
       <SlideContainer>
         <Swiper
+          modules={[Pagination]}
           onSwiper={(swiper) => {
             swiperRef.current = swiper;
             setIsEnd(swiper.isEnd);
@@ -108,7 +167,32 @@ const Slider: React.FC<ISliderProps> = ({ slides }) => {
             setIsBeginning(swiper.isBeginning);
           }}
           grabCursor={true}
-          slidesPerView={3}
+          slidesPerView={3.5}
+          breakpoints={{
+            0: {
+              slidesPerView: 1.3,
+              spaceBetween: 25,
+              pagination: {
+                enabled: true,
+                clickable: true,
+              },
+            },
+            768: {
+              slidesPerView: 2.5,
+              spaceBetween: 50,
+              pagination: {
+                enabled: true,
+                clickable: false,
+              },
+            },
+            1024: {
+              spaceBetween: 101,
+              pagination: { enabled: false },
+            },
+          }}
+          pagination={{
+            clickable: true,
+          }}
           centeredSlides={false}
           loop={false}
         >
@@ -136,7 +220,7 @@ const Slider: React.FC<ISliderProps> = ({ slides }) => {
         >
           <path
             d="M1 1L4 5L1 9"
-            stroke="#3877EE"
+            stroke="var(--blue)"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
