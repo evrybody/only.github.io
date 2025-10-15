@@ -13,7 +13,7 @@ interface IItemsStore {
 
 export const useDatesStore = create<IItemsStore>((set) => ({
   items: [
-    { index: 1, interval: [1983, 1985] }, 
+    { index: 1, interval: [1980, 1986] }, 
     { index: 2, interval: [1987, 1991] },
     { index: 3, interval: [1992, 1997] },
     { index: 4, interval: [1999, 2004] },
