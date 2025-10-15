@@ -10,9 +10,14 @@ export const GlobalStyle = createGlobalStyle`
   body {
     height: 100dvh;
     font-family: 'PT Sans', sans-serif;
-    color: #42567A;
+    color: var(--dark-blue);
     background: #F4F5F9;
   }
-`;
 
-//TODO global var for colors
+  :root {
+  --dark-blue: #42567a;
+  --blue: #3877ee;
+  --black-blue: #303e58;
+  }
+}
+`;
