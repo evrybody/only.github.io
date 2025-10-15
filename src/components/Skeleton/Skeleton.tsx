@@ -10,12 +10,7 @@ import DateChanger from "../HistoricalDates/DateChanger";
 import Slider from "../Slider/Slider";
 
 const SkeletonWrapper = styled.section`
-  position: relative;
-  width: 100%;
-  height: 100vh; //TODO
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: contents;
 `;
 
 const Cross = styled.div`
@@ -49,7 +44,7 @@ const Cross = styled.div`
 `;
 
 const HistoricalHeader = styled.span`
-  position: absolute;
+  grid-column: 1;
   margin-top: 170px;
   margin-left: 80px;
   font-size: 56px;
@@ -59,11 +54,27 @@ const HistoricalHeader = styled.span`
 `;
 
 const ColoredVector = styled.div`
-  position: absolute;
+  grid-column: 1;
   margin-top: 177px;
+  margin-left: 2px;
   width: 5px;
   height: 120px;
   background: linear-gradient(#3877ee, #ef5da8);
+`;
+
+const SidebarStack = styled.div`
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ContentArea = styled.div`
+  grid-column: 2;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1080px;
 `;
 
 const Skeleton: React.FC = () => {
@@ -72,17 +83,19 @@ const Skeleton: React.FC = () => {
 
   const currentSlides = getSlidesByIndex(activeIndex);
   return (
-    <>
-      <HistoricalHeader>Исторические даты</HistoricalHeader>
-      <ColoredVector />
-      <DateChanger />
-      <SkeletonWrapper>
+    <SkeletonWrapper>
+      <SidebarStack>
+        <HistoricalHeader>Исторические даты</HistoricalHeader>
+        <ColoredVector />
+        <DateChanger />
+      </SidebarStack>
+      <ContentArea>
         <Rotator items={items} />
         <Cross />
         <HistoricalDates />
         <Slider slides={currentSlides} />
-      </SkeletonWrapper>
-    </>
+      </ContentArea>
+    </SkeletonWrapper>
   );
 };
 

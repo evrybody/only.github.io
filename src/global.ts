@@ -11,9 +11,8 @@ export const GlobalStyle = createGlobalStyle`
     height: 100dvh;
     font-family: 'PT Sans', sans-serif;
     color: #42567A;
-    background: #f9fafb;
+    background: #F4F5F9;
   }
 `;
-
 
 //TODO global var for colors

@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
+import gsap from "gsap";
 import { useDatesStore } from "../../store/useDatesStore";
 import { useItemsStore } from "../../store/useItemsStore";
 
 const DatesWrapper = styled.div`
-  display: flex;
   position: absolute;
+  display: flex;
+  gap: 5rem;
   font-size: 200px;
   font-weight: bold;
-  gap: 5rem;
-  left: 50%;
-  transform: translateX(-50%);
+  pointer-events: none;
 `;
 
 const LeftDate = styled.span`
@@ -25,19 +25,48 @@ const HistoricalDates: React.FC = () => {
   const { activeIndex } = useItemsStore();
   const { items } = useDatesStore();
 
-  const activeInterval = items.find(
-    (item: { index: number; interval: [number, number] }) =>
-      item.index === activeIndex
-  )?.interval;
+  const leftRef = useRef<HTMLSpanElement>(null);
+  const rightRef = useRef<HTMLSpanElement>(null);
 
-  if (!activeInterval) return null;
+  const activeInterval = items.find((item) => item.index === activeIndex)?.interval;
+  const [start, end] = activeInterval || [];
 
-  const [start, end] = activeInterval;
+  const prevValues = useRef<{ start: number; end: number }>({
+    start: start || 0,
+    end: end || 0,
+  });
+
+  useEffect(() => {
+    if (!activeInterval || !leftRef.current || !rightRef.current) return;
+
+    const [newStart, newEnd] = activeInterval;
+    const { start: oldStart, end: oldEnd } = prevValues.current;
+
+    const obj = { left: oldStart, right: oldEnd };
+    const tl = gsap.timeline();
+
+    tl.to(obj, {
+      left: newStart,
+      right: newEnd,
+      duration: 1.2,
+      ease: "power2.out",
+      onUpdate: () => {
+        if (leftRef.current) {
+          leftRef.current.textContent = Math.round(obj.left).toString();
+        }
+        if (rightRef.current) {
+          rightRef.current.textContent = Math.round(obj.right).toString();
+        }
+      },
+    });
+
+    prevValues.current = { start: newStart, end: newEnd };
+  }, [activeInterval]);
 
   return (
     <DatesWrapper>
-      <LeftDate>{start}</LeftDate>
-      <RightDate>{end}</RightDate>
+      <LeftDate ref={leftRef}>{start}</LeftDate>
+      <RightDate ref={rightRef}>{end}</RightDate>
     </DatesWrapper>
   );
 };
